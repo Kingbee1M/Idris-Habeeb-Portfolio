@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { playUtilitySound } from "./utility-sounds";
 
 const destinations = [
   { id: "about", target: "about", label: "ABOUT", detail: "A LITTLE INTRODUCTION", glyph: "01" },
@@ -11,77 +12,6 @@ const destinations = [
   { id: "contact", target: "contact", label: "CONTACT", detail: "START A CONVERSATION", glyph: "05" },
   { id: "home", target: "home", label: "HOME", detail: "BACK TO THE TOP", glyph: "06" },
 ] as const;
-
-type SoundName = "shatter" | "hover" | "select";
-let sharedAudioContext: AudioContext | null = null;
-
-function getAudioContext() {
-  if (typeof window === "undefined" || !("AudioContext" in window)) return null;
-  sharedAudioContext ??= new window.AudioContext();
-  if (sharedAudioContext.state === "suspended") void sharedAudioContext.resume();
-  return sharedAudioContext;
-}
-
-function playSound(name: SoundName, variation = 0) {
-  const context = getAudioContext();
-  if (!context) return;
-
-  const now = context.currentTime;
-  if (name === "shatter") {
-    const duration = 0.34;
-    const buffer = context.createBuffer(1, Math.floor(context.sampleRate * duration), context.sampleRate);
-    const channel = buffer.getChannelData(0);
-    for (let i = 0; i < channel.length; i += 1) {
-      const progress = i / channel.length;
-      channel[i] = (Math.random() * 2 - 1) * (1 - progress) ** 3;
-    }
-    const crack = context.createBufferSource();
-    const filter = context.createBiquadFilter();
-    const crackGain = context.createGain();
-    crack.buffer = buffer;
-    filter.type = "highpass";
-    filter.frequency.setValueAtTime(1250, now);
-    crackGain.gain.setValueAtTime(0.16, now);
-    crackGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-    crack.connect(filter).connect(crackGain).connect(context.destination);
-    crack.start(now);
-    crack.stop(now + duration);
-
-    [1580, 2260, 3120, 4050].forEach((frequency, index) => {
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      const start = now + index * 0.027;
-      oscillator.type = "sine";
-      oscillator.frequency.setValueAtTime(frequency + Math.random() * 140, start);
-      oscillator.frequency.exponentialRampToValueAtTime(frequency * 0.72, start + 0.19);
-      gain.gain.setValueAtTime(0.0001, start);
-      gain.gain.exponentialRampToValueAtTime(0.055 / (index + 1), start + 0.009);
-      gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.25);
-      oscillator.connect(gain).connect(context.destination);
-      oscillator.start(start);
-      oscillator.stop(start + 0.26);
-    });
-    return;
-  }
-
-  const frequencies = name === "hover"
-    ? [520 + variation * 24]
-    : [420 + variation * 18, 660 + variation * 22, 880 + variation * 28];
-  frequencies.forEach((frequency, index) => {
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-    const start = now + (name === "select" ? index * 0.045 : 0);
-    oscillator.type = name === "hover" ? "sine" : "triangle";
-    oscillator.frequency.setValueAtTime(frequency, start);
-    if (name === "select") oscillator.frequency.exponentialRampToValueAtTime(frequency * 1.18, start + 0.17);
-    gain.gain.setValueAtTime(0.0001, start);
-    gain.gain.exponentialRampToValueAtTime(name === "hover" ? 0.025 : 0.045, start + 0.012);
-    gain.gain.exponentialRampToValueAtTime(0.0001, start + (name === "hover" ? 0.11 : 0.24));
-    oscillator.connect(gain).connect(context.destination);
-    oscillator.start(start);
-    oscillator.stop(start + (name === "hover" ? 0.12 : 0.25));
-  });
-}
 
 function sectorClip(index: number) {
   const centerAngle = -90 + index * 60;
@@ -165,7 +95,7 @@ export default function UtilityWheel({ dark }: UtilityWheelProps) {
     setActiveSector(null);
     setSpinning(false);
     setOpen(true);
-    playSound("shatter");
+    playUtilitySound("open");
   };
 
   const beginHoverOpen = () => {
@@ -181,7 +111,7 @@ export default function UtilityWheel({ dark }: UtilityWheelProps) {
   const navigateTo = (target: string, index: number) => {
     if (spinning) return;
     const destination = document.getElementById(target);
-    playSound("select", index);
+    playUtilitySound("select", index);
     setActiveSector(target);
     setSpinning(true);
     actionTimer.current = window.setTimeout(() => {
@@ -251,12 +181,12 @@ export default function UtilityWheel({ dark }: UtilityWheelProps) {
                       style={{ clipPath: sectorClip(index) }}
                       onPointerEnter={() => {
                         setActiveSector(item.id);
-                        if (lastHovered.current !== item.id) playSound("hover", index);
+                        if (lastHovered.current !== item.id) playUtilitySound("hover", index);
                         lastHovered.current = item.id;
                       }}
                       onFocus={() => {
                         setActiveSector(item.id);
-                        if (lastHovered.current !== item.id) playSound("hover", index);
+                        if (lastHovered.current !== item.id) playUtilitySound("hover", index);
                         lastHovered.current = item.id;
                       }}
                       onClick={() => navigateTo(item.target, index)}

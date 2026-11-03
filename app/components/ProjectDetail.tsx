@@ -1,6 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Project } from "../data/projects";
-import ProjectArtwork from "./ProjectArtwork";
 
 export default function ProjectDetail({ project }: { project: Project }) {
   return (
@@ -10,18 +10,17 @@ export default function ProjectDetail({ project }: { project: Project }) {
         <Link className="detail-back" href="/#projects"><span aria-hidden="true">←</span> BACK TO PROJECTS</Link>
         <div className="project-detail-hero">
           <div className="detail-copy">
-            <p className="detail-kicker"><span>{project.category}</span><i /> CONCEPT / PLACEHOLDER</p>
+            <p className="detail-kicker"><span>{project.category}</span><i /> SELECTED PROJECT</p>
             <h1>{project.title}<span>.</span></h1>
             <p className="detail-short">{project.description}</p>
-            <p className="detail-description">This is sample portfolio content to establish the project detail layout. Replace it with the real project story when you update the project data.</p>
           </div>
-          <div className="project-detail-art"><ProjectArtwork variant={project.variant} /></div>
+          <div className="project-detail-art"><Image src={project.image} alt={project.imageAlt} fill sizes="(max-width: 760px) 100vw, 55vw" className="project-detail-image" /></div>
         </div>
         <div className="project-detail-content">
-          <section className="project-detail-block"><p className="detail-label">THE BRIEF</p><h2>What this concept explores.</h2><p>{project.brief}</p></section>
-          <section className="project-detail-block"><p className="detail-label">DESIGN &amp; BUILD</p><h2>How it comes together.</h2><p>{project.approach}</p><div className="project-detail-stack">{project.stack.map((technology) => <span key={technology}>{technology}</span>)}</div></section>
+          <section className="project-detail-block"><p className="detail-label">OVERVIEW</p><h2>About the project.</h2><p>{project.brief}</p></section>
+          <section className="project-detail-block"><p className="detail-label">EXPERIENCE</p><h2>Built around the product.</h2><p>{project.approach}</p>{project.stack.length > 0 && <div className="project-detail-stack">{project.stack.map((technology) => <span key={technology}>{technology}</span>)}</div>}</section>
         </div>
-        <div className="project-link-panel"><div><p className="detail-label">PROJECT LINK</p><h2>{project.link ? "See the live project." : "Project link will be added."}</h2><p>{project.link ? "This sample URL can be replaced in the project data." : "Add the live URL to the link field in app/data/projects.ts when you replace this mock project."}</p></div>{project.link ? <a className="project-live-link" href={project.link} target="_blank" rel="noreferrer">VISIT PROJECT <span>↗</span></a> : <span className="project-link-na">URL / N/A</span>}</div>
+        <div className="project-link-panel"><div><p className="detail-label">PROJECT LINK</p><h2>{project.link ? "Visit the project." : "Project link unavailable."}</h2><p>{project.link ? "Open the live project in a new tab." : "A public project link is not available."}</p></div>{project.link ? <a className="project-live-link" href={project.link} target="_blank" rel="noreferrer">VISIT PROJECT <span>↗</span></a> : <span className="project-link-na">URL / N/A</span>}</div>
         <footer className="detail-footer"><span>HABEEB / PROJECTS</span><Link href="/#projects">RETURN TO PROJECTS <b>↗</b></Link></footer>
       </div>
     </main>

@@ -4,7 +4,8 @@
 import Image from "next/image";
 import portrait from "../../public/jpeg/habeeb-hero.jpg";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
+import { playUtilitySound } from "./utility-sounds";
 
 type HeroIconName = "home" | "about" | "work" | "projects" | "message";
 
@@ -100,6 +101,14 @@ const staggerContainer: Variants = {
 };
 
 export default function Hero({ dark, onThemeToggle }: HeroProps) {
+  const lastHovered = useRef<string | null>(null);
+
+  const playHoverSound = (control: string, variation: number) => {
+    if (lastHovered.current === control) return;
+    playUtilitySound("hover", variation);
+    lastHovered.current = control;
+  };
+
   // Detect the visitor's reduced-motion preference
   const prefersReducedMotion = useReducedMotion();
   const reduceMotion = prefersReducedMotion === true;
@@ -297,6 +306,9 @@ Best regards,`
           href="#home"
           className="wordmark"
           aria-label="Habeeb home"
+          onPointerEnter={() => playHoverSound("home", 5)}
+          onFocus={() => playHoverSound("home", 5)}
+          onClick={() => playUtilitySound("select", 5)}
         >
           H<span>.</span>
         </a>
@@ -307,7 +319,12 @@ Best regards,`
           <button
             className="theme-toggle"
             type="button"
-            onClick={onThemeToggle}
+            onClick={() => {
+              playUtilitySound("select");
+              onThemeToggle();
+            }}
+            onPointerEnter={() => playHoverSound("theme-toggle", 0)}
+            onFocus={() => playHoverSound("theme-toggle", 0)}
             aria-label={`Switch to ${dark ? "light" : "dark"} mode`}
             aria-pressed={dark}
           >
@@ -338,17 +355,20 @@ Best regards,`
         </motion.span>
 
         {([
-          ["home", "#home", "Home"],
-          ["about", "#about", "About me"],
-          ["work", "#experience", "Experience"],
-          ["projects", "#projects", "Projects"],
-          ["message", "#contact", "Contact"],
-        ] as const).map(([name, href, label], index) => (
+          ["home", "#home", "Home", 5],
+          ["about", "#about", "About me", 0],
+          ["work", "#experience", "Experience", 2],
+          ["projects", "#projects", "Projects", 3],
+          ["message", "#contact", "Contact", 4],
+        ] as const).map(([name, href, label, soundVariation], index) => (
           <motion.a
             key={name}
             className={`rail-link ${index === 0 ? "active" : ""}`}
             href={href}
             aria-label={label}
+            onPointerEnter={() => playHoverSound(name, soundVariation)}
+            onFocus={() => playHoverSound(name, soundVariation)}
+            onClick={() => playUtilitySound("select", soundVariation)}
             variants={accessibleFadeLeft}
             whileHover={
               reduceMotion ? undefined : { x: 5, scale: 1.1 }
