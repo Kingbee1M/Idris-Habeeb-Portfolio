@@ -1,6 +1,8 @@
+
 export type ExperienceRole = {
   slug: string;
   company: string;
+  logo?: string;
   role: string;
   arrangement: string;
   dates: string | null;
@@ -12,20 +14,6 @@ export type ExperienceRole = {
 };
 
 export const experience: ExperienceRole[] = [
-  {
-    slug: "connekta-plc",
-    company: "Connekta Plc",
-    role: "Front-End Developer",
-    arrangement: "Remote",
-    dates: "April 1st – Present",
-    overview: "A product and engineering role focused on building scalable web interfaces.",
-    summary: "I build web interfaces with a focus on dependable implementation, responsive behavior, and a consistent user experience.",
-    contributions: [
-      "Build scalable web interfaces using Next.js, TypeScript, and Tailwind CSS.",
-      "Translate product requirements into responsive front-end features.",
-    ],
-    website: null,
-  },
   {
     slug: "outcess-solutions",
     company: "Outcess Solutions",
@@ -44,6 +32,7 @@ export const experience: ExperienceRole[] = [
   {
     slug: "primeorb-solutions",
     company: "PrimeOrb Solutions",
+    logo: ".../public/experience/primeorb.svg",
     role: "Front-End Developer",
     arrangement: "Remote",
     dates: "December 2024 – January 2026",
@@ -73,7 +62,7 @@ export const experience: ExperienceRole[] = [
   },
   {
     slug: "leen-konnect",
-    company: "LeenKonnect",
+    company: "LeenKonnect/Emporium",
     role: "Front-End Developer",
     arrangement: "Remote / Hybrid",
     dates: "May 1st – Present",
@@ -82,8 +71,23 @@ export const experience: ExperienceRole[] = [
     contributions: [
       "Converted design mockups into responsive web components.",
       "Prepared components for production use across screen sizes.",
+      "Built the storefront, Vendor dashbord and Admin Dashbord for the company"
     ],
     website: "https://shopwithemporium.com/",
     websiteLabel: "Visit Emporium official website",
+  },
+  {
+    slug: "connekta-plc",
+    company: "Connekta Plc",
+    role: "Front-End Developer",
+    arrangement: "Remote",
+    dates: "April 1st – Present",
+    overview: "A product and engineering role focused on building scalable web interfaces.",
+    summary: "I build web interfaces with a focus on dependable implementation, responsive behavior, and a consistent user experience.",
+    contributions: [
+      "Build scalable web interfaces using Next.js, TypeScript, and Tailwind CSS.",
+      "Translate product requirements into responsive front-end features.",
+    ],
+    website: null,
   },
 ];

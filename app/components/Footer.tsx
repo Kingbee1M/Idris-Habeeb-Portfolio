@@ -30,9 +30,24 @@ function readLagosClock(): LagosClock {
   return { time, phase: "night", label: "NIGHT" };
 }
 
+const emailSubject = encodeURIComponent("Let's Work Together");
+const emailBody = encodeURIComponent(
+  `Good day Habeeb,
+
+I came across your portfolio and I'm impressed by your work and experience in designing and developing digital solutions.
+
+I would love to discuss a potential opportunity to work with you. I have a project or collaboration in mind that I believe could benefit from your skills and expertise.
+
+I'd appreciate the opportunity to share more details about what I have in mind, understand your availability, and explore how we could work together.
+
+I look forward to hearing from you.
+
+Best regards,`
+);
+const emailHref = `mailto:${contact.email}?subject=${emailSubject}&body=${emailBody}`;
 const contactItems = [
   { label: "PHONE", value: contact.phone, href: contact.phoneHref, icon: "↗" },
-  { label: "EMAIL", value: contact.email, href: contact.emailHref, icon: "↗" },
+  { label: "EMAIL", value: contact.email, href: emailHref, icon: "↗" },
   { label: "LINKEDIN", value: contact.linkedin, href: contact.linkedinHref, icon: "↗" },
   { label: "GITHUB", value: contact.github, href: contact.githubHref, icon: "↗" },
 ];
