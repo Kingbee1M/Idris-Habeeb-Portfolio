@@ -100,7 +100,6 @@ export default function Footer() {
                 </div>
               ))}
             </div>
-            <p className="footer-contact-note">Contact links are ready to personalize in <code>app/data/contact.ts</code>.</p>
           </div>
         </div>
         <div className="footer-bottom"><a href="#home" className="footer-wordmark">H<span>.</span></a><span>INDEPENDENT DEVELOPER / LAGOS, NIGERIA</span><span>© HABEEB 2026</span></div>
