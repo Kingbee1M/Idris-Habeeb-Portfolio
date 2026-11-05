@@ -22,7 +22,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "Tailwind CSS", "TypeScript"],
     image: "/projects/framer.webp",
     imageAlt: "Framer landing page with a blue productivity hero and abstract 3D artwork",
-    link: null,
+    link: 'https://framer-two-iota.vercel.app/',
   },
   {
     slug: "fasco-ecommerce",
@@ -34,7 +34,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "TypeScript", "Framer animation UI", "Tailwind CSS"],
     image: "/projects/Fasco.webp",
     imageAlt: "FASCO fashion storefront with a monochrome editorial sale banner",
-    link: null,
+    link: 'https://fascofasion.vercel.app/',
   },
   {
     slug: "infinite-solutions",
@@ -46,7 +46,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "Tailwind CSS", "TypeScript"],
     image: "/projects/infinitesolutions.webp",
     imageAlt: "Infinite Solutions website showing its web and app development services",
-    link: null,
+    link: 'https://infinite-solutions-old-site.vercel.app/',
   },
   {
     slug: "oceanica",
@@ -58,7 +58,7 @@ export const projects: Project[] = [
     stack: ["React", "Tailwind CSS", "TypeScript"],
     image: "/projects/Oceanica.webp",
     imageAlt: "Oceanica tourism landing page featuring ocean activities and travel experiences",
-    link: null,
+    link: 'https://oceanicaweb.netlify.app/',
   },
   {
     slug: "emporium-website",
